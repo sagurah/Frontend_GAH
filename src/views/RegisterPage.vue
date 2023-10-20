@@ -69,6 +69,9 @@ export default {
         })
         console.log(response)
         this.showSnackbar('Register Berhasil', 'success')
+        setTimeout(() => {
+          this.$router.push('/login')
+        }, 5000)
       } catch (error) {
         this.showSnackbar(`Register Gagal`, 'error')
       }

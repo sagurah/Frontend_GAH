@@ -23,7 +23,13 @@
       <v-list density="compact" class="scrollable-list">
         <v-list-subheader color="grey-lighten-1">Account Menu</v-list-subheader>
         <v-list-item variant="tonal" prepend-icon="mdi-account" link @click="movePage('/dashboard/profile')">Profile</v-list-item>
-        <v-list-item variant="tonal" prepend-icon="mdi-logout" link @click="dialogLogout = true">Logout</v-list-item>
+        <v-list-item variant="tonal" prepend-icon="mdi-history" link @click="movePage('/dashboard/riwayat')">Riwayat Transaksi</v-list-item>
+      </v-list>
+      
+      <v-divider></v-divider>
+
+      <v-list density="compact" class="scrollable-list">
+        <v-list-item prepend-icon="mdi-logout" link @click="dialogLogout = true" class="bg-red-darken-2 mt-2">Logout</v-list-item>
       </v-list>
 
       <v-dialog v-model="dialogLogout" width="auto" height="auto">
@@ -73,14 +79,16 @@ export default {
         { title: 'Data Kamar', path: '/dashboard/admin/data-kamar', icon: 'mdi-bed' }
       ],
       menuSM: [
-        { title: 'Data Kamar', path: '/dashboard/sm/datakamar' }
+        { title: 'Data Season', path: '/dashboard/sm/data-season', icon: 'mdi-calendar' },
+        { title: 'Data Fasilitas', path: '/dashboard/sm/data-fasilitas', icon: 'mdi-home' },
+        { title: 'Data Tarif', path: '/dashboard/sm/data-tarif', icon: 'mdi-currency-usd' },
       ],
       menuFO: [
         { title: 'Data Kamar', path: '/dashboard/fo/datakamar' }
       ],
       menuCustomer: [
-        { title: 'Data Kamar', path: '/dashboard/customer/datakamar', icon: 'mdi-home' },
-        { title: 'Reservasi', path: '/dashboard/customer/reservasi', icon: 'mdi-calendar' }
+        // { title: 'Data Kamar', path: '/dashboard/customer/datakamar', icon: 'mdi-home' },
+        // { title: 'Reservasi', path: '/dashboard/customer/reservasi', icon: 'mdi-calendar' }
       ],
       menuOwnerGM: [
         { title: 'Data Kamar', path: '/dashboard/ownergm/datakamar' }

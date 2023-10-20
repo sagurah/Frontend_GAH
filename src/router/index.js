@@ -38,9 +38,29 @@ const routes = [
         meta: { title: 'GAH - Profile' }
       },
       {
+        path: '/dashboard/riwayat',
+        component: () => import('@/views/Dashboard/RiwayatPage.vue'),
+        meta: { title: 'GAH - Riwayat Transaksi' }
+      },
+      {
         path: '/dashboard/admin/data-kamar',
         component: () => import('@/views/Dashboard/Admin/DataKamarPage.vue'),
         meta: { title: 'GAH - Data Kamar' }
+      },
+      {
+        path: '/dashboard/sm/data-season',
+        component: () => import('@/views/Dashboard/SM/DataSeasonPage.vue'),
+        meta: { title: 'GAH - Data Season' }
+      },
+      {
+        path: '/dashboard/sm/data-fasilitas',
+        component: () => import('@/views/Dashboard/SM/DataFasilitasPage.vue'),
+        meta: { title: 'GAH - Data Fasilitas' }
+      },
+      {
+        path: '/dashboard/sm/data-tarif',
+        component: () => import('@/views/Dashboard/SM/DataTarifPage.vue'),
+        meta: { title: 'GAH - Data Tarif' }
       }
     ]
   }

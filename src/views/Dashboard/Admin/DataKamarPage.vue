@@ -2,20 +2,21 @@
   <div>
     <v-main>
       <v-card elevation="5">
-        <v-card-title>List Data Kamar</v-card-title>
+        <v-card-title class="font-weight-bold">List Data Kamar</v-card-title>
         <v-card-subtitle>
           Pada halaman ini anda dapat melihat maupun merubah data kamar yang tersedia.
         </v-card-subtitle>
         <v-card-text>
           <v-btn color="indigo" class="mb-5" @click="tambahItem()">Tambah Data</v-btn>
           <v-text-field variant="outlined" v-model="search" prepend-inner-icon="mdi-magnify" label="Search" single-line hide-details class="bg-indigo-lighten-5"></v-text-field>
-          <v-data-table :search="search" :items-per-page="5" :headers="headers" :items="listKamar" class="elevation-2 bg-indigo-lighten-5"
+          <v-data-table v-if="listKamar && listKamar.length" :search="search" :items-per-page="5" :headers="headers" :items="listKamar" class="elevation-2 bg-indigo-lighten-5"
             :item-key="listKamar.ID_KAMAR">
             <template v-slot:[`item.actions`]="{ item }">
-              <v-btn icon="mdi-pencil-outline" color="yellow-darken-1" class="mr-2" @click="editItem(item)"></v-btn>
-              <v-btn icon="mdi-trash-can-outline" color="red-darken-1" @click="deleteItem(item)"></v-btn>
+              <v-btn icon="mdi-pencil-outline" color="yellow-darken-1" class="mr-2" @click="editItem(item)" density="comfortable"></v-btn>
+              <v-btn icon="mdi-trash-can-outline" color="red-darken-1" @click="deleteItem(item)" density="comfortable"></v-btn>
             </template>
           </v-data-table>
+          <v-data-table v-else :search="search" :items-per-page="5" :headers="headers" :items="listKamar" class="elevation-2 bg-indigo-lighten-5"></v-data-table>
         </v-card-text>
       </v-card>
 
@@ -106,7 +107,7 @@
             </v-form>
           </v-card-text>
           <v-card-actions>
-            <v-btn variant="flat" color="indigo-darken-2" block @click="saveEditItem()">Tambah</v-btn>
+            <v-btn variant="flat" color="indigo-darken-2" block @click="saveEditItem()">Simpan</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -124,7 +125,7 @@ export default {
     return {
       search: '',
       token: '',
-      listKamar: [],
+      listKamar: ref([]),
       formKamar: ref({
         NO_KAMAR: null,
         JENIS_KAMAR: '',
@@ -217,11 +218,11 @@ export default {
       this.dialogDelete = false
     },
     resetForm() {
-      this.formKamar.NO_KAMAR = ''
+      this.formKamar.NO_KAMAR = null
       this.formKamar.JENIS_KAMAR = ''
       this.formKamar.JENIS_BED = ''
-      this.formKamar.KAPASITAS = ''
-      this.formKamar.LUAS_KAMAR = ''
+      this.formKamar.KAPASITAS = null
+      this.formKamar.LUAS_KAMAR = null
       this.formKamar.FASILITAS = ''
     }
   },

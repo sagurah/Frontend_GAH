@@ -6,7 +6,7 @@
           Selamat Datang di <span class="font-weight-bold text-indigo">Dashboard</span> Grand Atma Hotel
         </v-card-title>
         <v-card-subtitle class="mb-3">
-          Hai! <span class="font-weight-bold text-indigo">{{ username }}</span> Anda login sebagai, <span class="font-weight-bold text-indigo">{{ role }}</span>
+          Hai! <span class="font-weight-bold text-indigo">{{ username }}</span> anda login sebagai, <span class="font-weight-bold text-indigo">{{ role }}</span>
         </v-card-subtitle>
       </v-card>
     </v-main>
