@@ -172,7 +172,6 @@ export default {
     const response = await axios.get('http://localhost:4000/api/v1/profile', config)
     this.formUserCustomer = response.data.data.customer[0]
 
-
     if (idRole === 1) {
       this.formUser.role = 'Admin'
     } else if (idRole === 2) {

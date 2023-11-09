@@ -36,7 +36,7 @@
                 </v-row>
                 <v-row>
                   <v-col cols="12" md="6">
-                    <v-select label="Jenis Kamar" v-model="formTarif.ID_KAMAR" :items="idKamarOption" item-title="JENIS_KAMAR" item-value="ID_KAMAR"></v-select>
+                    <v-select label="Nomor Kamar" v-model="formTarif.ID_KAMAR" :items="idKamarOption" item-title="JENIS_KAMAR" item-value="ID_KAMAR"></v-select>
                   </v-col>
                   <v-col cols="12" md="6">
                     <v-select label="Jenis Season" v-model="formTarif.ID_SEASON" :items="idSeasonOption" item-title="JENIS_SEASON" item-value="ID_SEASON"></v-select>
@@ -90,6 +90,8 @@
         </v-card>
       </v-dialog>
 
+      <v-snackbar v-model="snackbarValue.show" :color="snackbarValue.color">{{ snackbarValue.text }}</v-snackbar>
+
     </v-main>
   </div>
 </template>
@@ -110,6 +112,11 @@ export default {
         TOTAL_TARIF: null,
         ID_KAMAR: null,
         ID_SEASON: null
+      }),
+      snackbarValue: ref({
+        show: false,
+        text: '',
+        color: ''
       }),
       spliceIdTarif: '',
       deleteIdTarif: '',
@@ -136,6 +143,7 @@ export default {
   methods: {
     tambahItem() {
       this.dialogTambah = true
+      this.resetForm()
     },
     async saveTambahItem() {
       try {
@@ -147,6 +155,9 @@ export default {
         const newTarif = response.data.data
         this.listTarif.push(newTarif)
       } catch (error) {
+        this.snackbarValue.show = true
+        this.snackbarValue.color = 'error',
+        this.snackbarValue.text = 'Data tarif gagal ditambahkan'
         console.log(error)
       }
       this.dialogTambah = false
@@ -194,6 +205,14 @@ export default {
         ID_KAMAR: null,
         ID_SEASON: null
       }
+    }
+  },
+  computed: {
+    formattedIdKamarOptions() {
+      return this.idKamarOption.map(item => ({
+        ...item,
+        label: `${item.NO_KAMAR} - ${item.JENIS_KAMAR}`
+      }))
     }
   },
   async created() {

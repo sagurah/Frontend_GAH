@@ -82,16 +82,15 @@ export default {
         { title: 'Data Season', path: '/dashboard/sm/data-season', icon: 'mdi-calendar' },
         { title: 'Data Fasilitas', path: '/dashboard/sm/data-fasilitas', icon: 'mdi-home' },
         { title: 'Data Tarif', path: '/dashboard/sm/data-tarif', icon: 'mdi-currency-usd' },
+        { title: 'Data Customer', path: '/dashboard/sm/data-customer', icon: 'mdi-account-multiple' },
+        { title: 'Reservasi', path: '/dashboard/reservasi', icon: 'mdi-calendar' }
       ],
       menuFO: [
-        { title: 'Data Kamar', path: '/dashboard/fo/datakamar' }
       ],
       menuCustomer: [
-        // { title: 'Data Kamar', path: '/dashboard/customer/datakamar', icon: 'mdi-home' },
-        // { title: 'Reservasi', path: '/dashboard/customer/reservasi', icon: 'mdi-calendar' }
+        { title: 'Reservasi', path: '/dashboard/reservasi', icon: 'mdi-calendar' }
       ],
       menuOwnerGM: [
-        { title: 'Data Kamar', path: '/dashboard/ownergm/datakamar' }
       ],
       idRole: null,
       role: '',
@@ -105,6 +104,7 @@ export default {
     logout() {
       localStorage.removeItem('currentUser')
       localStorage.removeItem('token')
+      localStorage.removeItem('resumePemesanan')
       this.$router.push('/login')
     }
   },

@@ -110,6 +110,42 @@ const routes = [
             next('/unauthorized')
           }
         }
+      },
+      {
+        path: '/dashboard/sm/data-customer',
+        component: () => import('@/views/Dashboard/SM/DataCustomerPage.vue'),
+        meta: { title: 'GAH - Data Customer' },
+        beforeEnter: (to, from, next) => {
+          if (localStorage.getItem('token') && JSON.parse(localStorage.getItem('currentUser')).ID_ROLE === 2) {
+            next()
+          } else {
+            next('/unauthorized')
+          }
+        }
+      },
+      {
+        path: '/dashboard/reservasi',
+        component: () => import('@/views/Dashboard/ReservasiPage.vue'),
+        meta: { title: 'GAH - Reservasi' },
+        beforeEnter: (to, from, next) => {
+          if (localStorage.getItem('token') && JSON.parse(localStorage.getItem('currentUser')).ID_ROLE === 2 || JSON.parse(localStorage.getItem('currentUser')).ID_ROLE === 4) {
+            next()
+          } else {
+            next('/unauthorized')
+          }
+        }
+      },
+      {
+        path: '/dashboard/reservasi/resume',
+        component: () => import('@/views/Dashboard/ResumePage.vue'),
+        meta: { title: 'GAH - Resume Reservasi' },
+        beforeEnter: (to, from, next) => {
+          if (localStorage.getItem('token') && JSON.parse(localStorage.getItem('currentUser')).ID_ROLE === 2 || JSON.parse(localStorage.getItem('currentUser')).ID_ROLE === 4 && localStorage.getItem('resumePemesanan')) {
+            next()
+          } else {
+            next('/unauthorized')
+          }
+        }
       }
     ]
   },
@@ -117,6 +153,11 @@ const routes = [
     path: '/unauthorized',
     component: () => import('@/views/UnauthorizedPage.vue'),
     meta: { title: 'GAH - Unauthorized' }
+  },
+  {
+    path: '/not-found',
+    component: () => import('@/views/NotFoundPage.vue'),
+    meta: { title: 'GAH - Not Found' }
   }
 ]
 
@@ -126,8 +167,14 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  document.title=to.meta.title
-  next()
+  if(to.meta.title) {
+    document.title = to.meta.title
+    next()
+  }
+
+  if(to.matched.length === 0) {
+    next('/not-found')
+  }
 }) 
 
 export default router

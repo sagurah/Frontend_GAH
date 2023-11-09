@@ -30,7 +30,7 @@
               <v-container>
                 <v-row>
                   <v-col cols="12" md="6">
-                    <v-text-field label="Jenis Season" v-model="formSeason.JENIS_SEASON"></v-text-field>
+                    <v-select v-model="formSeason.JENIS_SEASON" :items="['Promo Season', 'High Season', 'Default Season']" label="Jenis Season"></v-select>
                   </v-col>
                   <v-col cols="12" md="6">
                     <v-text-field label="Tanggal Mulai" v-model="formSeason.TGL_MULAI" type="date"></v-text-field>
@@ -72,7 +72,7 @@
               <v-container>
                 <v-row>
                   <v-col cols="12" md="6">
-                    <v-text-field label="Jenis Season" v-model="formSeason.JENIS_SEASON"></v-text-field>
+                    <v-select v-model="formSeason.JENIS_SEASON" :items="['Promo Season', 'High Season', 'Default Season']" label="Jenis Season"></v-select>
                   </v-col>
                   <v-col cols="12" md="6">
                     <v-text-field label="Tanggal Mulai" v-model="formSeason.TGL_MULAI" type="date"></v-text-field>
@@ -142,6 +142,7 @@ export default {
   methods: {
     tambahItem() {
       this.dialogTambah = true
+      this.resetForm()
     },
     async saveTambahItem() {
       try {

@@ -34,12 +34,12 @@
                     <v-text-field label="Nomor Kamar" v-model="formKamar.NO_KAMAR"></v-text-field>
                   </v-col>
                   <v-col cols="12" md="6">
-                    <v-text-field label="Jenis Kamar" v-model="formKamar.JENIS_KAMAR"></v-text-field>
+                    <v-select v-model="formKamar.JENIS_KAMAR" :items="['Superior', 'Double Deluxe', 'Executive Deluxe', 'Junior Suite']" label="Jenis Kamar"></v-select>
                   </v-col>
                 </v-row>
                 <v-row>
                   <v-col cols="12" md="6">
-                    <v-text-field label="Jenis Bed" v-model="formKamar.JENIS_BED"></v-text-field>
+                    <v-select v-model="formKamar.JENIS_BED" :items="['Double', 'King']" label="Jenis Bed"></v-select>
                   </v-col>
                   <v-col cols="12" md="6">
                     <v-text-field label="Kapasitas" v-model="formKamar.KAPASITAS"></v-text-field>
@@ -84,12 +84,12 @@
                     <v-text-field label="Nomor Kamar" v-model="formKamar.NO_KAMAR"></v-text-field>
                   </v-col>
                   <v-col cols="12" md="6">
-                    <v-text-field label="Jenis Kamar" v-model="formKamar.JENIS_KAMAR"></v-text-field>
+                    <v-select v-model="formKamar.JENIS_KAMAR" :items="['Superior', 'Double Deluxe', 'Executive Deluxe', 'Junior Suite']" label="Jenis Kamar"></v-select>
                   </v-col>
                 </v-row>
                 <v-row>
                   <v-col cols="12" md="6">
-                    <v-text-field label="Jenis Bed" v-model="formKamar.JENIS_BED"></v-text-field>
+                    <v-select v-model="formKamar.JENIS_BED" :items="['Double', 'King']" label="Jenis Bed"></v-select>
                   </v-col>
                   <v-col cols="12" md="6">
                     <v-text-field label="Kapasitas" v-model="formKamar.KAPASITAS"></v-text-field>
@@ -165,6 +165,7 @@ export default {
   methods: {
     tambahItem() {
       this.dialogTambah = true
+      this.resetForm()
     },
     async saveTambahItem() {
       try {

@@ -134,6 +134,7 @@ export default {
   methods: {
     tambahItem() {
       this.dialogTambah = true
+      this.resetForm()
     },
     async saveTambahItem() {
       try {
