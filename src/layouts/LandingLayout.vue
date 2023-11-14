@@ -70,13 +70,13 @@ onMounted(() => {
     })
   }
 
-  map.value = L.map(mapContainer.value).setView([-7.780621, 110.414404], 15)
+  map.value = L.map(mapContainer.value).setView([-7.7879118, 110.3667021], 15)
   L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
   }).addTo(map.value);
 
-  const locationMarker = L.marker([-7.780621, 110.414404]).addTo(map.value);
+  const locationMarker = L.marker([-7.7879118, 110.3667021]).addTo(map.value);
   locationMarker.bindPopup('Grand Atma Hotel').openPopup()
 })
 

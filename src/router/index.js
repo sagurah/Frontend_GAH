@@ -5,6 +5,13 @@ const routes = [
   {
     path: '/',
     component: () => import('@/layouts/LandingLayout.vue'),
+    beforeEnter: (to, from, next) => {
+      if (localStorage.getItem('token')) {
+        next('/dashboard')
+      } else {
+        next()
+      }
+    },
     children: [
       {
         path: '/',
@@ -140,7 +147,7 @@ const routes = [
         component: () => import('@/views/Dashboard/ResumePage.vue'),
         meta: { title: 'GAH - Resume Reservasi' },
         beforeEnter: (to, from, next) => {
-          if (localStorage.getItem('token') && JSON.parse(localStorage.getItem('currentUser')).ID_ROLE === 2 || JSON.parse(localStorage.getItem('currentUser')).ID_ROLE === 4 && localStorage.getItem('resumePemesanan')) {
+          if (localStorage.getItem('token') && localStorage.getItem('resumePemesanan') && JSON.parse(localStorage.getItem('currentUser')).ID_ROLE === 2 || JSON.parse(localStorage.getItem('currentUser')).ID_ROLE === 4) {
             next()
           } else {
             next('/unauthorized')

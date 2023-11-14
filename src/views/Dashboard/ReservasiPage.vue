@@ -123,12 +123,17 @@
           <v-card-title class="font-weight-bold">Data Pemesan</v-card-title>
           <v-card-subtitle>Disini anda dapat melihat data pribadi anda untuk pemesanan</v-card-subtitle>
           <v-card-text>
-            <v-row>
+            <v-row v-if="dataProfile">
               <v-col cols="12" md="6">
                 <v-text-field variant="outlined" label="Nama" v-model="dataProfile.customer[0].NAMA_CUSTOMER" readonly></v-text-field>
               </v-col>
               <v-col cols="12" md="6">
                 <v-text-field variant="outlined" label="Nomor Telepon" v-model="dataProfile.customer[0].NO_TELP" readonly></v-text-field>
+              </v-col>
+            </v-row>
+            <v-row v-else>
+              <v-col cols="12">
+                <v-select variant="outlined" :items="listCustomer" label="Select Customer" item-value="ID_CUSTOMER" item-title="NAMA_CUSTOMER" v-model="selectedCustomer"></v-select>
               </v-col>
             </v-row>
             <div class="mb-4">
@@ -168,20 +173,11 @@
                 <v-btn block color="warning" @click="dialogDataPemesanCustomer = false">Kembali</v-btn>
               </v-col>
               <v-col cols="12" md="9">
-                <v-btn block :disabled="dataPemesanan.jumlahAnak === '' || dataPemesanan.jumlahDewasa === ''" color="indigo-darken-2" @click="checkout">Checkout</v-btn>
+                <v-btn block :disabled="dataPemesanan.jumlahAnak === '' || dataPemesanan.jumlahDewasa === ''" color="indigo-darken-2" @click="checkout" v-if="currentUser.ID_ROLE === 4">Checkout</v-btn>
+                <v-btn block :disabled="dataPemesanan.jumlahAnak === '' || dataPemesanan.jumlahDewasa === ''" color="indigo-darken-2" @click="checkoutSM" v-if="currentUser.ID_ROLE === 2">Checkout</v-btn>
               </v-col>
             </v-row>
           </v-card-title>
-        </v-card>
-      </v-dialog>
-
-      <v-dialog v-model="dialogConfirmDelete" class="bg-indigo-darken-2">
-        <v-card>
-          <v-card-title>Confirm Checkout</v-card-title>
-          <v-card-subtitle>Sudah yakin dengan data yang anda berikan? Klik OK untuk checkout</v-card-subtitle>
-          <v-card-text>
-            <v-btn variant="tonal" color="indigo-lighten-3" @click="checkout">Checkout</v-btn>
-          </v-card-text>
         </v-card>
       </v-dialog>
 
@@ -252,11 +248,13 @@ const dataPemesanan = ref({
   jumlahDewasa: '',
 })
 
+const listCustomer = ref([])
 const listKamar = ref([])
 const listFasilitas = ref([])
 const listKamarCart = ref([])
 const listFasilitasCart = ref([])
 const token = localStorage.getItem('token')
+const selectedCustomer = ref()
 
 const snackbarValue = ref({
   show: false,
@@ -265,7 +263,6 @@ const snackbarValue = ref({
 })
 const searchKamar = ref('')
 const searchFasilitas = ref('')
-const dialogConfirmDelete = ref(false)
 const dialogCart = ref(false)
 const dialogKamar = ref(false)
 const dialogDataPemesanCustomer = ref(false)
@@ -446,21 +443,21 @@ const formattedPrice = computed(() => {
   }).format(calculated);
 })
 
-const checkout = async () => {
+const checkoutSM = async () => {
   try {
     const kamarTarifIds = listKamarCart.value.map(item => item.tarif[0].ID_TARIF)
     const fasilitasIds = listFasilitasCart.value.map(item => item.ID_FASILITAS)
     const kamarTarifHarga = listKamarCart.value.map(item => item.tarif[0].TOTAL_TARIF)
     const fasilitasHarga = listFasilitasCart.value.map(item => item.HARGA)
-
-    const response = await axios.post('http://localhost:4000/api/v1/transaksi/addTransaksiCustomer', {
+    
+    const response = await axios.post('http://localhost:4000/api/v1/transaksi/addTransaksiSM', {
       tglReservasi: today,
       tglCheckin: inputDate.value.startDate,
       tglCheckout: inputDate.value.endDate,
       jmlDewasa: dataPemesanan.value.jumlahDewasa,
       jmlAnak: dataPemesanan.value.jumlahAnak,
       totalBayar: (countTotalHargaKamar.value * diffDays.value) + countTotalHargaFasilitas.value,
-      idAkun: currentUser.value.ID_AKUN,
+      idCustomer: selectedCustomer.value,
       hargaKamar: kamarTarifHarga,
       hargaFasilitas: fasilitasHarga,
       kamarTarifIds,
@@ -471,7 +468,6 @@ const checkout = async () => {
       }
     })
 
-    console.log(response.data.message)
     resumePemesanan.value = response.data.data
 
     localStorage.setItem('resumePemesanan', JSON.stringify(resumePemesanan.value))
@@ -492,9 +488,68 @@ const checkout = async () => {
       color: 'success'
     }
   } catch (error) {
+    console.log(response.data)
+    console.log(error)
+    console.log(error.message)
     snackbarValue.value = {
       show: true,
-      text: `Checkout gagal, pastikan data yang anda inputkan sudah sesuai. ${error.message}`,
+      text: `Checkout gagal, pastikan data yang anda inputkan sudah sesuai. `,
+      color: 'error'
+    }
+  }
+}
+
+const checkout = async () => {
+  try {
+    const kamarTarifIds = listKamarCart.value.map(item => item.tarif[0].ID_TARIF)
+    const fasilitasIds = listFasilitasCart.value.map(item => item.ID_FASILITAS)
+    const kamarTarifHarga = listKamarCart.value.map(item => item.tarif[0].TOTAL_TARIF)
+    const fasilitasHarga = listFasilitasCart.value.map(item => item.HARGA)
+    
+    const response = await axios.post('http://localhost:4000/api/v1/transaksi/addTransaksiCustomer', {
+      tglReservasi: today,
+      tglCheckin: inputDate.value.startDate,
+      tglCheckout: inputDate.value.endDate,
+      jmlDewasa: dataPemesanan.value.jumlahDewasa,
+      jmlAnak: dataPemesanan.value.jumlahAnak,
+      totalBayar: (countTotalHargaKamar.value * diffDays.value) + countTotalHargaFasilitas.value,
+      idAkun: currentUser.value.ID_AKUN,
+      hargaKamar: kamarTarifHarga,
+      hargaFasilitas: fasilitasHarga,
+      kamarTarifIds,
+      fasilitasIds
+    }, {
+      headers: {
+        'Authorization': token
+      }
+    })
+
+    resumePemesanan.value = response.data.data
+
+    localStorage.setItem('resumePemesanan', JSON.stringify(resumePemesanan.value))
+
+    dialogCart.value = false
+    dialogDataPemesanCustomer.value = false
+
+    listKamarCart.value = []
+    listFasilitas.value = []
+
+    setTimeout(() => {
+      router.push('/dashboard/reservasi/resume')
+    }, 3000);
+
+    snackbarValue.value = {
+      show: true,
+      text: 'Checkout berhasil, anda akan dialihkan ke halaman resume pemesanan.',
+      color: 'success'
+    }
+  } catch (error) {
+    console.log(response.data)
+    console.log(error)
+    console.log(error.message)
+    snackbarValue.value = {
+      show: true,
+      text: `Checkout gagal, pastikan data yang anda inputkan sudah sesuai. `,
       color: 'error'
     }
   }
@@ -536,6 +591,30 @@ const getProfile = async () => {
   }
 }
 
+const getCustomer = async () => {
+  try {
+    const response = await axios.get(`http://localhost:4000/api/v1/customerGroup/${currentUser.value.ID_AKUN}`, {
+      headers: {
+        'Authorization': token
+      }
+    })
+
+    listCustomer.value = response.data.data
+    snackbarValue.value = {
+      show: true,
+      text: 'Data customer berhasil diambil...',
+      color: 'success'
+    }
+
+    console.log(listCustomer.value)
+  } catch (error) {
+    snackbarValue.value = {
+      show: true,
+      text: 'Data customer gagal diambil...',
+      color: 'error'
+    }
+  }
+}
 
 onMounted(() => {
   getDataFasilitas()
@@ -543,6 +622,8 @@ onMounted(() => {
 
   if (currentUser.value.ID_ROLE === 4) {
     getProfile()
+  } else if(currentUser.value.ID_ROLE === 2) {
+    getCustomer()
   }
 
 })
