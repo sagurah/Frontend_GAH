@@ -45,7 +45,7 @@
               <v-card variant="outlined" class="py-5 px-5">
                 <div class="text-center">
                   <v-img
-                    src="https://firebasestorage.googleapis.com/v0/b/capstone-cdb77.appspot.com/o/logo.png?alt=media&token=c134b6af-1e0d-434e-b381-dcd077196515&_gl=1*a58tki*_ga*MjEyODU5OTQ5MC4xNjg1OTc4NjE0*_ga_CW55HF8NVT*MTY5NzUyMjg4Ni4yNC4xLjE2OTc1MjI5MzYuMTAuMC4w"></v-img>
+                    src="https://i.ibb.co/dbTn7nD/logo.jpg"></v-img>
                 </div>
                 <div class="text-center mt-4">
                   <p>Jl. P. Mangkubumi No.18, Yogyakarta 55233</p>
@@ -182,11 +182,13 @@
 <script>
 import axios from 'axios';
 import { ref } from 'vue';
-import html2pdf from "html2pdf.js";
+import { jsPDF } from 'jspdf';
+import html2canvas from 'html2canvas';
 
 export default {
   data() {
     return {
+      doc: new jsPDF(),
       confirmationDialog: false,
       reservationToCancel: ref(),
       search: '',
@@ -224,18 +226,19 @@ export default {
   methods: {
     toPdf(item) {
       this.seeDetail(item)
-      const opt = {
-        margin: 1,
-        filename: `Invoice - ${this.bookingDetails.NO_RESERVASI}.pdf`,
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2 },
-        jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
-      }
 
-      const element = document.getElementById('pdf').innerHTML
-      console.log(element)
+      setTimeout(() => {
+        const element = document.getElementById('pdf')
+        if(element) {
+          html2canvas(element, { useCORS: true }).then(canvas => {
+            const pdf = this.doc
 
-      html2pdf(element, opt)
+            pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 10, 10, 190, 277)
+
+            pdf.save(`Invoice - ${item.NO_RESERVASI}.pdf`)
+          })
+        }  
+      }, 5000);
     },
     async seeDetail(item) {
       this.dialogDetailReservasi = true
