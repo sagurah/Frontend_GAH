@@ -111,7 +111,7 @@
                 <v-col cols="12" md="6">
                   <p class="text-end font-weight-bold" v-if="currentUser.ID_ROLE === 4">{{ formattedPrice(dataResume.reservasi.TOTAL_BAYAR) }}</p>
                   <p class="text-end font-weight-bold" v-if="currentUser.ID_ROLE === 2">{{ formattedPrice(dataResume.reservasi.TOTAL_BAYAR * 0.5)}}</p>
-                  <p class="text-end font-weight-thin" v-if="currentUser.ID_ROLE === 2">Potongan 50%</p>
+                  <p class="text-end font-weight-thin" v-if="currentUser.ID_ROLE === 2">50% sebagai uang jaminan.</p>
                 </v-col>
               </v-row>
             </v-card-text>
@@ -164,7 +164,7 @@ const finishReservation = async () => {
   localStorage.removeItem('resumePemesanan')
 
   try {
-    const response = await axios.put(`http://localhost:4000/api/v1/transaksi/finishTransaksi`, {
+    const response = await axios.put(`https://grandatma-api-8af872fa0845.herokuapp.com/api/v1/transaksi/finishTransaksi`, {
       idReservasi: dataResume.value.reservasi.ID_RESERVASI,
     }, {
       headers: {
@@ -186,7 +186,7 @@ const isButtonDisabled = computed(() => inputBuktiBayar.value === null || inputB
 
 const getProfile = async () => {
   try {
-    const response = await axios.get(`http://localhost:4000/api/v1/profile/${dataCurrentUser.value.ID_AKUN}`, {
+    const response = await axios.get(`https://grandatma-api-8af872fa0845.herokuapp.com/api/v1/profile/${dataCurrentUser.value.ID_AKUN}`, {
       headers: {
         'Authorization': token
       }

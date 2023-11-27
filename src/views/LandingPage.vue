@@ -166,7 +166,7 @@ export default {
   },
   methods: {
     cariKamar() {
-      axios.get(`http://localhost:4000/api/v1/tarif/getAllTarif`)
+      axios.get(`https://grandatma-api-8af872fa0845.herokuapp.com/api/v1/tarif/getAllTarif`)
         .then(res => {
           this.availableRooms.push(res.data.data)
         })

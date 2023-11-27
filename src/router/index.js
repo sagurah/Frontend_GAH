@@ -153,6 +153,30 @@ const routes = [
             next('/unauthorized')
           }
         }
+      },
+      {
+        path: '/dashboard/fo/pelayanan-penginapan',
+        component: () => import('@/views/Dashboard/FO/PelayananPenginapanPage.vue'),
+        meta: { title: 'GAH - Pelayanan Penginapan' },
+        beforeEnter: (to, from, next) => {
+          if (localStorage.getItem('token') && JSON.parse(localStorage.getItem('currentUser')).ID_ROLE === 3) {
+            next()
+          } else {
+            next('/unauthorized')
+          }
+        }
+      },
+      {
+        path: '/dashboard/owner/laporan',
+        component: () => import('@/views/Dashboard/Owner/LaporanPage.vue'),
+        meta: { title: 'GAH - Laporan' },
+        beforeEnter: (to, from, next) => {
+          if (localStorage.getItem('token') && JSON.parse(localStorage.getItem('currentUser')).ID_ROLE === 5) {
+            next()
+          } else {
+            next('/unauthorized')
+          }
+        }
       }
     ]
   },

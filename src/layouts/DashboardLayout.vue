@@ -86,11 +86,13 @@ export default {
         { title: 'Reservasi', path: '/dashboard/reservasi', icon: 'mdi-calendar' }
       ],
       menuFO: [
+        { title: 'Penginapan', path: '/dashboard/fo/pelayanan-penginapan', icon: 'mdi-bed' }
       ],
       menuCustomer: [
         { title: 'Reservasi', path: '/dashboard/reservasi', icon: 'mdi-calendar' }
       ],
       menuOwnerGM: [
+        { title: 'Laporan', path: '/dashboard/owner/laporan', icon: 'mdi-file-chart' }
       ],
       idRole: null,
       role: '',

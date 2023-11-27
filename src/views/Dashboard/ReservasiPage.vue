@@ -292,14 +292,16 @@ const headersFasilitas = [
 
 const getKamarReady = async () => {
   try {
-    const response = await axios.get(`http://localhost:4000/api/v1/transaksi/getKamarReady?startDate=${inputDate.value.startDate}&endDate=${inputDate.value.endDate}`, {
+    const response = await axios.get(`https://grandatma-api-8af872fa0845.herokuapp.com/api/v1/transaksi/getKamarReady?startDate=${inputDate.value.startDate}&endDate=${inputDate.value.endDate}`, {
       headers: {
         'Authorization': token
       }
     })
 
     listKamar.value = response.data.data.map(item => {
-      item.tarif[0].TOTAL_TARIF = countTotalPrice(item);
+      if (item.tarif && item.tarif.length > 0) {
+        item.tarif[0].TOTAL_TARIF = countTotalPrice(item);
+      }
       return item;
     });
 
@@ -450,7 +452,7 @@ const checkoutSM = async () => {
     const kamarTarifHarga = listKamarCart.value.map(item => item.tarif[0].TOTAL_TARIF)
     const fasilitasHarga = listFasilitasCart.value.map(item => item.HARGA)
     
-    const response = await axios.post('http://localhost:4000/api/v1/transaksi/addTransaksiSM', {
+    const response = await axios.post('https://grandatma-api-8af872fa0845.herokuapp.com/api/v1/transaksi/addTransaksiSM', {
       tglReservasi: today,
       tglCheckin: inputDate.value.startDate,
       tglCheckout: inputDate.value.endDate,
@@ -506,7 +508,7 @@ const checkout = async () => {
     const kamarTarifHarga = listKamarCart.value.map(item => item.tarif[0].TOTAL_TARIF)
     const fasilitasHarga = listFasilitasCart.value.map(item => item.HARGA)
     
-    const response = await axios.post('http://localhost:4000/api/v1/transaksi/addTransaksiCustomer', {
+    const response = await axios.post('https://grandatma-api-8af872fa0845.herokuapp.com/api/v1/transaksi/addTransaksiCustomer', {
       tglReservasi: today,
       tglCheckin: inputDate.value.startDate,
       tglCheckout: inputDate.value.endDate,
@@ -557,7 +559,7 @@ const checkout = async () => {
 
 const getDataFasilitas = async () => {
   try {
-    const response = await axios.get('http://localhost:4000/api/v1/fasilitasTambahan/getAllFasilitasTambahan', {
+    const response = await axios.get('https://grandatma-api-8af872fa0845.herokuapp.com/api/v1/fasilitasTambahan/getAllFasilitasTambahan', {
       headers: {
         'Authorization': token
       }
@@ -575,7 +577,7 @@ const getDataFasilitas = async () => {
 
 const getProfile = async () => {
   try {
-    const response = await axios.get(`http://localhost:4000/api/v1/profile/${currentUser.value.ID_AKUN}`, {
+    const response = await axios.get(`https://grandatma-api-8af872fa0845.herokuapp.com/api/v1/profile/${currentUser.value.ID_AKUN}`, {
       headers: {
         'Authorization': token
       }
@@ -593,7 +595,7 @@ const getProfile = async () => {
 
 const getCustomer = async () => {
   try {
-    const response = await axios.get(`http://localhost:4000/api/v1/customerGroup/${currentUser.value.ID_AKUN}`, {
+    const response = await axios.get(`https://grandatma-api-8af872fa0845.herokuapp.com/api/v1/customerGroup/${currentUser.value.ID_AKUN}`, {
       headers: {
         'Authorization': token
       }

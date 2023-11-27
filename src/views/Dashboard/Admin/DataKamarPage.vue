@@ -169,7 +169,7 @@ export default {
     },
     async saveTambahItem() {
       try {
-        const response = await axios.post(`http://localhost:4000/api/v1/kamar/addKamar`, this.formKamar, {
+        const response = await axios.post(`https://grandatma-api-8af872fa0845.herokuapp.com/api/v1/kamar/addKamar`, this.formKamar, {
           headers: {
             Authorization: this.token
           }
@@ -191,7 +191,7 @@ export default {
     async saveEditItem() {
       this.listKamar.splice(this.indexIdKamar, 1)
       try {
-        const response = await axios.put(`http://localhost:4000/api/v1/kamar/updateKamar/${this.editIdKamar}`, this.formKamar, {
+        const response = await axios.put(`https://grandatma-api-8af872fa0845.herokuapp.com/api/v1/kamar/updateKamar/${this.editIdKamar}`, this.formKamar, {
           headers: {
             Authorization: this.token
           }
@@ -211,7 +211,7 @@ export default {
     },
     async saveDeleteItem() {
       this.listKamar.splice(this.spliceIdKamar, 1)
-      await axios.delete(`http://localhost:4000/api/v1/kamar/deleteKamar/${this.deleteIdKamar}`, {
+      await axios.delete(`https://grandatma-api-8af872fa0845.herokuapp.com/api/v1/kamar/deleteKamar/${this.deleteIdKamar}`, {
         headers: {
           Authorization: this.token
         }
@@ -232,7 +232,7 @@ export default {
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
     try {
-      const result = await axios.get(`http://localhost:4000/api/v1/kamar/getAllKamar`, {
+      const result = await axios.get(`https://grandatma-api-8af872fa0845.herokuapp.com/api/v1/kamar/getAllKamar`, {
         headers: {
           Authorization: this.token
         }

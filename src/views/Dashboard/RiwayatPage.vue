@@ -59,9 +59,9 @@
                 <div class="text-end mt-4">
                   <p>Tgl. Reservasi: <b>{{ bookingDetails.TGL_RESERVASI }}</b></p>
                 </div>
-                <div class="text-start mt-4" v-if="bookingDetails.pegawai">
-                  <p>ID Booking: <b>{{ bookingDetails.NO_RESERVASI }}</b></p>
-                  <p>Nama: <b>{{ bookingDetails.pegawai.NAMA_PEGAWAI }}</b></p>
+                <div class="text-end" v-if="bookingDetails.pegawai">
+                  <p>ID Invoice: <b>{{ bookingDetails.invoice[0].NO_INVOICE }}</b></p>
+                  <p>Nama FO: <b>{{ bookingDetails.pegawai.NAMA_PEGAWAI }}</b></p>
                 </div>
                 <div class="text-start mt-4" v-if="bookingDetails.customer">
                   <p>ID Booking: <b>{{ bookingDetails.NO_RESERVASI }}</b></p>
@@ -133,7 +133,7 @@
                     </tr>
                   </tbody>
                 </v-table>
-                <div class="text-right mt-3 mb-3">
+                <div class="text-right mt-3 mb-3" v-if="bookingDetails.invoice && bookingDetails.invoice.length <= 0">
                   <p>Sub Total: <b>{{ formattedPrice }}</b></p>
                 </div>
                 <div class="text-end mt-4" v-if="bookingDetails.invoice && bookingDetails.invoice.length > 0">
@@ -141,7 +141,8 @@
                   <p>TOTAL: <b>Rp{{ bookingDetails.TOTAL_BAYAR }}</b></p>
                   <p class="mt-4">Jaminan: <b>Rp{{ bookingDetails.invoice[0].JAMINAN }}</b></p>
                   <p>Deposit: <b>Rp{{ bookingDetails.invoice[0].DEPOSIT }}</b></p>
-                  <p>Cash: <b>Rp{{ bookingDetails.invoice[0].SISA_KEKURANGAN }}</b></p>
+                  <p class="mt-4" v-if="parseFloat(bookingDetails.invoice[0].SISA_KEKURANGAN) > 0">Cash Kembalian: <b>{{ Intl.NumberFormat('id-ID', {style: 'currency', currency: 'IDR'}).format(bookingDetails.invoice[0].SISA_KEKURANGAN) }}</b></p>
+                  <p class="mt-4" v-if="parseFloat(bookingDetails.invoice[0].SISA_KEKURANGAN) < 0">Cash Kekurangan: <b>{{ Intl.NumberFormat('id-ID', {style: 'currency', currency: 'IDR'}).format(bookingDetails.invoice[0].SISA_KEKURANGAN) }}</b></p>
                 </div>
                 <v-divider thickness="3" class="mt-4 mb-2"></v-divider>
                 <p class="text-center">Thank You for Your Visit!</p>
@@ -243,7 +244,7 @@ export default {
     async seeDetail(item) {
       this.dialogDetailReservasi = true
 
-      const bookingDetails = await axios.get(`http://localhost:4000/api/v1/detailReservasi/${item.ID_RESERVASI}`, {
+      const bookingDetails = await axios.get(`https://grandatma-api-8af872fa0845.herokuapp.com/v1/detailReservasi/${item.ID_RESERVASI}`, {
         headers: {
           Authorization: this.token
         }
@@ -270,7 +271,7 @@ export default {
     },
     async batalkanReservasi(item) {
       try {
-        await axios.delete(`http://localhost:4000/api/v1/transaksi/cancelTransaksi/${item.ID_RESERVASI}`, {
+        await axios.delete(`https://grandatma-api-8af872fa0845.herokuapp.com/api/v1/transaksi/cancelTransaksi/${item.ID_RESERVASI}`, {
           headers: {
             Authorization: this.token
           }
@@ -341,7 +342,7 @@ export default {
     this.token = localStorage.getItem('token');
     const currentUser = JSON.parse(localStorage.getItem('currentUser'))
     try {
-      const result = await axios.get(`http://localhost:4000/api/v1/riwayatReservasi/${currentUser.ID_AKUN}`, {
+      const result = await axios.get(`https://grandatma-api-8af872fa0845.herokuapp.com/api/v1/riwayatReservasi/${currentUser.ID_AKUN}`, {
         headers: {
           Authorization: this.token
         },

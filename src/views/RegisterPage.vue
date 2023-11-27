@@ -62,7 +62,7 @@ export default {
       }
 
       try {
-        const response = await axios.post('http://localhost:4000/api/v1/auth/register', this.userCredentials, {
+        const response = await axios.post('https://grandatma-api-8af872fa0845.herokuapp.com/api/v1/auth/register', this.userCredentials, {
           headers: {
             "Content-Type": "application/json"
           }

@@ -109,7 +109,7 @@ export default {
       } else {
         this.isReadOnly = true
         try {
-          await axios.put(`http://localhost:4000/api/v1/profile/editAkun`, this.formUser, {
+          await axios.put(`https://grandatma-api-8af872fa0845.herokuapp.com/api/v1/profile/editAkun`, this.formUser, {
             headers: {
               Authorization: this.token
             }
@@ -137,7 +137,7 @@ export default {
             body: currentUser
           }
 
-          await axios.put(`http://localhost:4000/api/v1/profile/editProfile`, this.formUserCustomer, config)
+          await axios.put(`https://grandatma-api-8af872fa0845.herokuapp.com/api/v1/profile/editProfile`, this.formUserCustomer, config)
 
           this.resetForm()
           location.reload()
@@ -169,7 +169,7 @@ export default {
       }
     }
 
-    const response = await axios.get('http://localhost:4000/api/v1/profile', config)
+    const response = await axios.get('https://grandatma-api-8af872fa0845.herokuapp.com/api/v1/profile', config)
     this.formUserCustomer = response.data.data.customer[0]
 
     if (idRole === 1) {
