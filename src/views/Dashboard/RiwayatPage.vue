@@ -244,7 +244,7 @@ export default {
     async seeDetail(item) {
       this.dialogDetailReservasi = true
 
-      const bookingDetails = await axios.get(`https://grandatma-api-8af872fa0845.herokuapp.com/v1/detailReservasi/${item.ID_RESERVASI}`, {
+      const bookingDetails = await axios.get(`https://grandatma-api-8af872fa0845.herokuapp.com/api/v1/detailReservasi/${item.ID_RESERVASI}`, {
         headers: {
           Authorization: this.token
         }
